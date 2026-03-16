@@ -18,6 +18,10 @@ public class BaseTest {
 	Properties config;
 	ThreadLocal<WebDriver> tldriver = new ThreadLocal<>();
 	
+//	public WebDriver getDriver() {
+//		return tldriver.get();
+//	}
+	
 	@BeforeSuite
 	public void loadConfig() throws IOException {
 		FileInputStream fis = new FileInputStream("src\\test\\resources\\config.properties");
