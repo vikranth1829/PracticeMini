@@ -1,5 +1,6 @@
 package com.mini.base;
 
+import org.testng.annotations.AfterMethod;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -18,13 +19,14 @@ public class BaseTest {
 	Properties config;
 	ThreadLocal<WebDriver> tldriver = new ThreadLocal<>();
 	
-//	public WebDriver getDriver() {
-//		return tldriver.get();
-//	}
+	public WebDriver getDriver() {
+		return tldriver.get();
+	}
 	
 	@BeforeSuite
 	public void loadConfig() throws IOException {
-		FileInputStream fis = new FileInputStream("src\\test\\resources\\config.properties");
+		config = new Properties();
+		FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
 		config.load(fis);
 	}
 	
@@ -55,14 +57,15 @@ public class BaseTest {
 		default:
 			throw new IllegalArgumentException("Unsupported browser : "+browserName);
 		}
-		tldriver.get().get(baseUrl);
+		getDriver().manage().window().maximize();
+		getDriver().get(baseUrl);
 		
 	}
 	
 	@AfterMethod
 	public void tearDown() {
-		if(tldriver!=null) {
-			tldriver.get().quit();
+		if(getDriver()!=null) {
+			getDriver().quit();
 			tldriver.remove();
 		}
 	}
